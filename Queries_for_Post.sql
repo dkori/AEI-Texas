@@ -31,4 +31,5 @@ FROM dec2008todec2014
 LEFT JOIN tl_2014_us_state
 ON (dec2008todec2014.state_fips=tl_2014_us_state.statefp);
 
-/*Next, I linked QGIS to do this postgres database, and set up a filter for the "percentchange" column.
+/*Next, I linked QGIS to do this postgres database, and set up a filter referencing the "percentchange" column to create the color
+gradient*/
