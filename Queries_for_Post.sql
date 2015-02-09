@@ -19,3 +19,16 @@ SELECT sum(CASE WHEN State_FIPS!='48'THEN change ELSE 0 END) AS RestOfNation, SU
 (SUM(CASE WHEN (State_FIPS!='48') THEN change ELSE 0 END)/SUM(CASE WHEN (State_FIPS!='48') THEN val2007 ELSE 0 END)) AS RestofNationPercent,
 (SUM(CASE WHEN (State_FIPS='48') THEN change ELSE 0 END)/SUM(CASE WHEN (State_FIPS='48') THEN val2007 ELSE 0 END)) AS TexasPercent
 FROM Dec2007toDec2008;
+
+/*to create the map, I first had to import a TIGER state-level shapefile from the census website into postgreSQL using pgshapeloader.
+I then merged the table created from the imported shapefile with dec2008todec2014.*/
+
+DROP TABLE IF EXISTS Change2008to2014map;
+
+SELECT *
+INTO Change2008to2014map
+FROM dec2008todec2014
+LEFT JOIN tl_2014_us_state
+ON (dec2008todec2014.state_fips=tl_2014_us_state.statefp);
+
+/*Next, I linked QGIS to do this postgres database, and set up a filter for the "percentchange" column.
